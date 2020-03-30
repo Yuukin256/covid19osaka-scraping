@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 from json import dumps
 from typing import Dict
 
+from bs4 import BeautifulSoup
 import requests
 
 import openpyxl
@@ -68,6 +69,21 @@ def get_xlsx(url: str, filename: str) -> openpyxl.workbook.workbook.Workbook:
         res.raw.decode_content = True
         shutil.copyfileobj(res.raw, f)
     return openpyxl.load_workbook(filename)
+
+
+def get_news(url: str) -> BeautifulSoup:
+    failed_count = 0
+    status_code = 404
+    while not status_code == 200:
+        try:
+            res = requests.get(url, stream=True)
+            status_code = res.status_code
+        except Exception:
+            if failed_count >= 5:
+                raise Exception(f"Failed get news from \"{url}\"!")
+            failed_count += 1
+            time.sleep(5)
+    return BeautifulSoup(res.content, "html.parser")
 
 
 def dumps_json(file_name: str, json_data: Dict) -> None:

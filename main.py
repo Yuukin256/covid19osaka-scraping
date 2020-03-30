@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
+import re
 from typing import Dict
 
 import config
-from util import MAIN_SUMMARY_INIT, dumps_json, excel_date, get_xlsx, jst
+from util import MAIN_SUMMARY_INIT, dumps_json, excel_date, get_xlsx, get_news, jst
 
 
 class DataJson:
@@ -247,5 +248,47 @@ class DataJson:
                 break
 
 
+class NewsJson():
+    def __init__(self):
+        self.publications = 3
+        self.news_elements = get_news("http://www.pref.osaka.lg.jp/iryo/osakakansensho/corona.html").select("div.detail_free > p > a")
+        self._news_items = []
+        self._news_json = {}
+
+    def news_json(self):
+        if not self._news_json:
+            self.make_data()
+        return self._news_json
+
+    def make_data(self):
+        for i, n in enumerate(self.news_elements, 1):
+            self._news_items.append({
+                "date": self.get_date(n),
+                "url": self.get_url(n),
+                "text": self.get_title(n)
+            })
+            if i >= self.publications:
+                break
+
+        self._news_json = {
+            "newsItems": self._news_items
+        }
+
+    def get_date(self, element) -> str:
+        ymd = re.search(r"令和(\d+)年(\d+)月(\d+)日", element.get_text(strip=True)).groups()
+        date = datetime(int(ymd[0]) + 2018, int(ymd[1]), int(ymd[2]))
+        return date.strftime("%Y/%m/%d")
+
+    def get_url(self, element) -> str:
+        return element["href"]
+
+    def get_title(self, element) -> str:
+        text = element.get_text()
+        return re.sub(r"【.+?】", "", text).strip()
+
+
+
+
 if __name__ == '__main__':
     dumps_json("data.json", DataJson().data_json())
+    dumps_json("news.json", NewsJson().news_json())
