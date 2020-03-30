@@ -5,7 +5,6 @@ from typing import Dict
 import config
 from util import MAIN_SUMMARY_INIT, dumps_json, excel_date, get_xlsx, get_news, jst
 
-
 class DataJson:
     def __init__(self):
         # self.patients_file = get_xlsx(config.patients_xlsx, "patients.xlsx")
@@ -251,7 +250,7 @@ class DataJson:
 class NewsJson():
     def __init__(self):
         self.publications = 3
-        self.news_elements = get_news("http://www.pref.osaka.lg.jp/iryo/osakakansensho/corona.html").select("div.detail_free > p > a")
+        self.press_tr = get_news("http://www.pref.osaka.lg.jp/hodo/index.php?HST_BUCODE=6000&SEARCH_NUM=50&site=fumin&start=1").select("div.box_list > table > tr")
         self._news_items = []
         self._news_json = {}
 
@@ -261,32 +260,31 @@ class NewsJson():
         return self._news_json
 
     def make_data(self):
-        for i, n in enumerate(self.news_elements, 1):
-            self._news_items.append({
-                "date": self.get_date(n),
-                "url": self.get_url(n),
-                "text": self.get_title(n)
-            })
-            if i >= self.publications:
-                break
+        i = 0
+        for tr in self.press_tr:
+            if re.match(r"新型コロナウイルス感染症患者.+の発生について.*", self.get_title(tr)):
+                self._news_items.append({
+                    "date": self.get_date(tr),
+                    "url": self.get_url(tr),
+                    "text": self.get_title(tr)
+                })
+                i += 1
+                if i >= self.publications:
+                    break
 
         self._news_json = {
             "newsItems": self._news_items
         }
 
     def get_date(self, element) -> str:
-        ymd = re.search(r"令和(\d+)年(\d+)月(\d+)日", element.get_text(strip=True)).groups()
-        date = datetime(int(ymd[0]) + 2018, int(ymd[1]), int(ymd[2]))
-        return date.strftime("%Y/%m/%d")
+        date = element.select_one(".box_list_col0").get_text()
+        return datetime.strptime(date, "%Y年%m月%d日").strftime("%Y/%m/%d")
 
     def get_url(self, element) -> str:
-        return element["href"]
+        return element.select_one(".box_list_col3 > a")["href"]
 
     def get_title(self, element) -> str:
-        text = element.get_text()
-        return re.sub(r"【.+?】", "", text).strip()
-
-
+        return element.select_one(".box_list_col3 > *").get_text(strip=True)
 
 
 if __name__ == '__main__':
