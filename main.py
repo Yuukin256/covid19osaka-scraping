@@ -1,9 +1,8 @@
 from datetime import datetime, timedelta
+from typing import Dict
 
 import config
-from util import MAIN_SUMMARY_INIT, excel_date, get_xlsx, jst, dumps_json
-
-from typing import Dict
+from util import MAIN_SUMMARY_INIT, dumps_json, excel_date, get_xlsx, jst
 
 
 class DataJson:
