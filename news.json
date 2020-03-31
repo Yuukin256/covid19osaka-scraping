@@ -1,0 +1,19 @@
+{
+    "newsItems": [
+        {
+            "date": "2020/03/30",
+            "url": "http://www.pref.osaka.lg.jp/hodo/index.php?site=fumin&pageId=37900",
+            "text": "新型コロナウイルス感染症患者（209例目から216例目）の発生について"
+        },
+        {
+            "date": "2020/03/29",
+            "url": "http://www.pref.osaka.lg.jp/hodo/index.php?site=fumin&pageId=37890",
+            "text": "新型コロナウイルス感染症患者（192例目から208例目）の発生について"
+        },
+        {
+            "date": "2020/03/28",
+            "url": "http://www.pref.osaka.lg.jp/hodo/index.php?site=fumin&pageId=37889",
+            "text": "新型コロナウイルス感染症患者（177例目から191例目）の発生について"
+        }
+    ]
+}
