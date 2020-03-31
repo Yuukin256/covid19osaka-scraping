@@ -71,7 +71,7 @@ def get_xlsx(url: str, filename: str) -> openpyxl.workbook.workbook.Workbook:
     return openpyxl.load_workbook(filename)
 
 
-def get_news(url: str) -> BeautifulSoup:
+def get_html(url: str) -> BeautifulSoup:
     failed_count = 0
     status_code = 404
     while not status_code == 200:

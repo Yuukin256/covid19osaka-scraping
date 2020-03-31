@@ -3,7 +3,7 @@ import re
 from typing import Dict
 
 import config
-from util import MAIN_SUMMARY_INIT, dumps_json, excel_date, get_xlsx, get_news, jst
+from util import MAIN_SUMMARY_INIT, dumps_json, excel_date, get_xlsx, get_html, jst
 
 class DataJson:
     def __init__(self):
@@ -250,7 +250,7 @@ class DataJson:
 class NewsJson():
     def __init__(self):
         self.publications = 3
-        self.press_tr = get_news("http://www.pref.osaka.lg.jp/hodo/index.php?HST_BUCODE=6000&SEARCH_NUM=50&site=fumin&start=1").select("div.box_list > table > tr")
+        self.press_tr = get_html(config.news_url).select("div.box_list > table > tr")
         self._news_items = []
         self._news_json = {}
 
