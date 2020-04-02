@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 
-import config
 from util import MAIN_SUMMARY_INIT, excel_date, get_xlsx, jst, dumps_json
 
 from typing import Dict
@@ -9,8 +8,7 @@ from typing import Dict
 class DataJson:
     def __init__(self):
         # self.patients_file = get_xlsx(config.patients_xlsx, "patients.xlsx")
-        self.patients_and_inspections_file = get_xlsx("patients_and_inspections.xlsx"
-        )
+        self.patients_and_inspections_file = get_xlsx("patients_and_inspections.xlsx")
         # self.patients_sheet = self.patients_file["Sheet1"]
         # self.inspections_file = get_xlsx(config.inspections_xlsx, "inspections.xlsx")
         # self.inspections_sheet = self.inspections_file["モトデータ"]
