@@ -9,8 +9,7 @@ from typing import Dict
 class DataJson:
     def __init__(self):
         # self.patients_file = get_xlsx(config.patients_xlsx, "patients.xlsx")
-        self.patients_and_inspections_file = get_xlsx(
-            config.patients_and_inspections_xlsx, "patients_and_inspections.xlsx"
+        self.patients_and_inspections_file = get_xlsx("patients_and_inspections.xlsx"
         )
         # self.patients_sheet = self.patients_file["Sheet1"]
         # self.inspections_file = get_xlsx(config.inspections_xlsx, "inspections.xlsx")
@@ -19,9 +18,9 @@ class DataJson:
         self.patients_sheet = self.patients_and_inspections_file["【公開OK】府HP用(陽性者ベース)"]
         self.inspections_sheet = self.patients_and_inspections_file["【公開OK】コロナサイト用（日付ベース）"]
         self.main_summary_sheet = self.patients_and_inspections_file["【公開OK】ピポット集計"]
-        self.contacts1_file = get_xlsx(config.contacts1_xlsx, "contacts1.xlsx")
+        self.contacts1_file = get_xlsx("contacts1.xlsx")
         self.contacts1_sheet = self.contacts1_file["Sheet1"]
-        self.contacts2_file = get_xlsx(config.contacts2_xlsx, "contacts2.xlsx")
+        self.contacts2_file = get_xlsx("contacts2.xlsx")
         self.contacts2_sheet = self.contacts2_file["Sheet1"]
         self.patients_count = 3
         self.inspections_count = 3

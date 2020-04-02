@@ -51,23 +51,8 @@ def excel_date(num) -> datetime:
     return datetime(1899, 12, 30) + timedelta(days=num, hours=8)
 
 
-def get_xlsx(url: str, filename: str) -> openpyxl.workbook.workbook.Workbook:
-    filename = "./data/" + filename
-    failed_count = 0
-    status_code = 404
-    while not status_code == 200:
-        try:
-            res = requests.get(url, stream=True)
-            status_code = res.status_code
-        except Exception:
-            if failed_count >= 5:
-                raise Exception(f"Failed get xlsx file from \"{url}\"!")
-            failed_count += 1
-            time.sleep(5)
-    with open(filename, 'wb') as f:
-        res.raw.decode_content = True
-        shutil.copyfileobj(res.raw, f)
-    return openpyxl.load_workbook(filename)
+def get_xlsx(filename: str) -> openpyxl.workbook.workbook.Workbook:
+    return openpyxl.load_workbook("./data/" + filename)
 
 
 def dumps_json(file_name: str, json_data: Dict) -> None:
