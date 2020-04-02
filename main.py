@@ -261,7 +261,7 @@ class NewsJson():
     def make_data(self):
         i = 0
         for tr in self.press_tr:
-            if re.match(r"新型コロナウイルス感染症患者.+の発生について.*", self.get_title(tr)):
+            if re.match(r"「?新型コロナウイルス感染症患者.+の発生について.*", self.get_title(tr)):
                 self._news_items.append({
                     "date": self.get_date(tr),
                     "url": self.get_url(tr),
